@@ -1,0 +1,5 @@
+﻿input.ng-touched.ng-invalid{
+    border-color: red;
+}
+
+.top-buffer { margin-top:20px; }

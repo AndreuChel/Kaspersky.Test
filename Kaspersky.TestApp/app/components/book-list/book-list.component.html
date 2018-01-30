@@ -1,0 +1,65 @@
+﻿<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Обложка</th>
+                <th>
+                    <button type="button" class="btn btn-link" (click)="SortClick('title')">Заголовок</button>
+                    <span class="glyphicon glyphicon-arrow-up"   *ngIf = "SortStatus('title') == 2"></span>
+                    <span class="glyphicon glyphicon-arrow-down" *ngIf = "SortStatus('title') == 1"></span>
+                </th>
+                <th>Авторы</th>
+                <th style="min-width:100px;">
+                    <div style="display:inline-block;">
+                        <div style="display:inline">
+                            <button type="button" class="btn btn-link" (click)="SortClick('pCount')">Стр</button>
+                        </div>
+                        <div style="display:inline">
+                            <span class="glyphicon glyphicon-arrow-up" *ngIf="SortStatus('pCount') == 2"></span>
+                            <span class="glyphicon glyphicon-arrow-down" *ngIf="SortStatus('pCount') == 1"></span>
+                        </div>
+                    </div>
+                </th>
+                <th>Издатель</th>
+                <th>Год</th>
+                <th>ISBN</th>
+                <th colspan="2">
+                    <button type="button" (click)="AddBook()" class="btn btn-default">
+                        <span class= "glyphicon glyphicon-plus-sign"></span>
+                            Добавить книгу
+                     </button>
+                </th>
+            </tr>
+        </thead>
+        <tr class="bookRow" *ngFor="let book of books">
+            <td class="picBook">
+                <img *ngIf="book.imagePath" width="50px" height="50px" [src]="book.imagePath" />
+                <img *ngIf="!book.imagePath" width="50px" height="50px" />
+            </td>
+            <td style="width:40%">{{book.title}}</td>
+            <td style="width:25%">
+                <ul>
+                    <li *ngFor="let a of book.authors">
+                        {{a.FirstName}} {{a.LastName}}
+                    </li>
+                </ul>
+            </td>
+            <td>{{book.pCount | number }}</td>
+            <td>{{book.publisher}}</td>
+            <td>{{book.publicYear}}</td>
+            <td>{{book.ISBN}}</td>
+            <td>
+                <button type="button" (click)="OnEdit(book)" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    Edit
+                </button>
+            </td>
+            <td>
+                <button type="button" (click)="OnDelete(book)" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

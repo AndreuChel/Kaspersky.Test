@@ -1,0 +1,37 @@
+﻿img {
+    background-image: url('/assets/images/default.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+ }
+
+table {
+    border: 3px solid #000; /* Рамка вокруг таблицы */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 5px 1px 5px 1px; /* Поля вокруг текста */
+    border: 1px solid #aaa; /* Рамка вокруг ячеек */
+}
+th {
+    text-align: center;
+    background-color: #aaa;
+    border: 1px solid #000;
+}
+.bookRow td {
+    vertical-align: text-top;
+}
+.bookRow:hover {
+    background-color: #ffff99;
+}
+.picBook {
+    avertical-align: bottom;
+    atext-align: center;
+    abackground-color:  #000;
+}
+ul {
+    margin-left: 10px;
+    padding-left: 10px;
+}

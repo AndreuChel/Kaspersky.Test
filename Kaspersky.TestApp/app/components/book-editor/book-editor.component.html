@@ -1,0 +1,143 @@
+﻿<div class="container" style="min-width:1000px;">
+    <form [formGroup]="BookEditForm" novalidate>
+        <div class="row top" style="padding-top:10px;" style="abackground-color:aqua">
+            <div class="col-md-12 col-xs-12 co-sm-12">
+                <h3 *ngIf="isNew">Добавление элемента</h3>
+                <h3 *ngIf="!isNew">Редактирование элемента</h3>
+            </div>
+        </div>
+        <div class="row top" style="padding-top:10px;" style="abackground-color:red">
+            <div class="col-md-6 col-xs-6 co-sm-6">
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <label for="title">Название книги</label>
+                        <input type="text" class="form-control input-sm" id="title" formControlName="title"
+                               placeholder="Название книги" />
+                        <div class="error text-danger" *ngIf="isControlInvalid('title')">
+                            Обязательное поле. Количество символов не более 20.
+                        </div>
+                    </div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-5 col-xs-5 co-sm-5">Выбранные авторы</div>
+                    <div class="col-md-2 col-xs-2 co-sm-2"></div>
+                    <div class="col-md-5 col-xs-5 co-sm-5">Доступные авторы</div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-5 col-xs-5 co-sm-5">
+                        <select name="to" id="multiselect_to" class="form-control"
+                                size="8" multiple="multiple"></select>
+                        <small id="emailHelp" class="form-text text-muted">* (минимум 1)</small>
+                    </div>
+                    <div class="col-md-2 col-xs-2 co-sm-2">
+                        <button type="button" id="multiselect_rightAll" class="btn btn-block btn-sm center-block">
+                            <span class="glyphicon glyphicon-backward"></span>
+                        </button>
+                        <button type="button" id="multiselect_rightSelected" class="btn btn-block btn-sm center-block">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </button>
+                        <button type="button" id="multiselect_leftSelected" class="btn btn-block btn-sm">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </button>
+                        <button type="button" id="multiselect_leftAll" class="btn btn-block btn-sm col-md-2">
+                            <span class="glyphicon glyphicon-forward"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-5 col-xs-5 co-sm-5">
+                        <select name="from" id="multiselect" class="form-control" size="8" multiple="multiple"> </select>
+
+                        <input type="text" #fNameInput style="padding:0px;" class="form-control input-sm col-xs-3" id="newFName" placeholder="Имя"  />
+                        <input type="text" #lNameInput style="padding:0px;" class="form-control input-sm col-xs-3" id="newLName" placeholder="Фамилия" />
+
+                        <button type="button" style="padding:0px;" class="btn btn-primary input-sm col-md-2 col-xs-2 co-sm-2"
+                                (click)="AddAuthor(fNameInput.value, lNameInput.value)" >
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-6 co-sm-6">
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <label for="pCount">Количество страниц</label>
+                        <input IntNumberOnly class="form-control input-sm" type="text" id="pCount" formControlName="pCount"
+                               placeholder="Количество страниц" />
+                        <div class="error text-danger" *ngIf="isControlInvalid('pCount')">
+                            Обязательное поле. Количество страниц может быть в диапазоне [1..10000]
+                        </div>
+                    </div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <label for="publisher">Издатель</label>
+                        <input type="text" class="form-control input-sm" id="publisher" formControlName="publisher"
+                               placeholder="Издатель" />
+                        <div class="error text-danger" *ngIf="isControlInvalid('publisher')">
+                            Количество символов не может быть больше 20
+                        </div>
+                    </div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <label for="publicYear">Год издания</label>
+                        <input IntNumberOnly type="text" class="form-control input-sm" id="publicYear" formControlName="publicYear"
+                               placeholder="Год издания" />
+                        <div class="error text-danger" *ngIf="isControlInvalid('publicYear')">
+                            Обязательное поле. <br />Год издания может быть в диапазоне [1800..текущий год]
+                        </div>
+                    </div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <label for="isbn">ISBN</label>
+                        <input type="text" class="form-control input-sm" id="isbn" formControlName="isbn"
+                               placeholder="ISBN" />
+                        <div class="error text-danger" *ngIf="isControlInvalid('isbn')">
+                            Неверный код ISBN10 (10цифр)
+                        </div>
+                    </div>
+                </div>
+                <div class="row top" style="padding-top:10px;">
+                    <div class="col-md-6 col-xs-6 co-sm-6">
+                        <div class="row top" style="padding-top:10px;">
+                            <div class="col-md-6 col-xs-6 co-sm-6">
+                                <label for="isbn">Обложка</label>
+                            </div>
+                        </div>
+                        <div class="row top" style="padding-top:5px;">
+                            <div class="col-md-6 col-xs-6 co-sm-6">
+                                <input type="file" (change)="fileChanged($event)" class="form-control input-sm hidden" id="photo" />
+                                <img *ngIf="bookPhoto" width="100" height="100" [src]="bookPhoto" style="border:1px solid #808080;" />
+                                <img *ngIf="!bookPhoto" width="100" height="100" style="border:1px solid #808080;"
+                                     src="./assets/images/default.png" />
+                            </div>
+                        </div>
+                        <div class="row top">
+                            <div class="col-md-6 col-xs-6 co-sm-6">
+                                <span>
+                                    <button type="button" class="btn btn-link" (click)="LoadImage()" role="button" style="padding:0px;">
+                                        Load
+                                    </button>
+                                    <button type="button" class="btn btn-link" (click)="ClearImage()" role="button" style="padding:0px;">
+                                        Clear
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row top" style="padding-top:10px;" style="abackground-color:gray">
+            <div class="col-md-12 col-xs-12 co-sm-12">
+                <button type="button" (click)="SaveClick()" class="form-control btn btn-primary" style="width:100px;"
+                        [disabled]="!BookEditForm.valid || AutorCount < 1">
+                    Сохранить
+                </button>
+                <button type="button" (click)="CancelClick()" class="btn bnt-default" style="width:100px;padding-left:10px;">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
