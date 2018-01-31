@@ -66,7 +66,8 @@ export class BookListComponent implements OnInit {
             if (st.title == 'title') {
                 this.books.sort(function (a: any, b: any) {
                     if (st.status == 2) { var t = a; a = b; b = t; }
-                    return (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0);
+                    return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 :
+                              ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0);
                 });
             }
             if (st.title == 'pCount') {

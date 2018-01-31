@@ -67,7 +67,8 @@ var BookListComponent = /** @class */ (function () {
                         a = b;
                         b = t;
                     }
-                    return (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0);
+                    return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 :
+                        ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0);
                 });
             }
             if (st.title == 'pCount') {
