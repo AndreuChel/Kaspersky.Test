@@ -11,7 +11,7 @@ using rep = Kaspersky.TestApp.DataLayer.BookDb.Entities;
 
 namespace Kaspersky.TestApp.Controllers
 {
-    public class AuthorController :  ApiController
+    public class AuthorController : BaseApiController
     {
         // GET: api/Book
         public IEnumerable<rep.Author> Get()
@@ -41,8 +41,13 @@ namespace Kaspersky.TestApp.Controllers
             var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
             try
             {
-                var newId = NinjectResolver.Get<IAuthorRepository>().Create(value);
-                result = Request.CreateResponse(HttpStatusCode.OK, newId);
+                if (ModelState.IsValid)
+                {
+                    var newId = NinjectResolver.Get<IAuthorRepository>().Create(value);
+                    result = Request.CreateResponse(HttpStatusCode.OK, newId);
+                }
+                else
+                    result = Request.CreateResponse(HttpStatusCode.BadRequest, GetValidationErrorString(ModelState));
             }
             catch (Exception ex) { result = Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message); }
 

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Text;
+using System.Web.Http.ModelBinding;
 
 namespace Kaspersky.TestApp.Controllers
 {
@@ -16,6 +17,11 @@ namespace Kaspersky.TestApp.Controllers
             var response = Request.CreateResponse(HttpStatusCode.OK);
             response.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             return response;
+        }
+        protected string GetValidationErrorString(ModelStateDictionary state)
+        {
+            return "Ошибки при серверной валидации:\r\n" +
+                    string.Join("\r\n - ", ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage));
         }
     }
 }

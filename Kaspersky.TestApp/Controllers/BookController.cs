@@ -12,7 +12,7 @@ using rep = Kaspersky.TestApp.DataLayer.BookDb.Entities;
 
 namespace Kaspersky.TestApp.Controllers
 {
-    public class BookController : ApiController
+    public class BookController : BaseApiController
     {
         // GET: api/Book
         public IEnumerable<rep.Book> Get()
@@ -39,9 +39,15 @@ namespace Kaspersky.TestApp.Controllers
         public HttpResponseMessage Post([FromBody]rep.Book value)
         {
             var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
+
             try {
-                var newId = NinjectResolver.Get<IBookRepository>().Create(value);
-                result = Request.CreateResponse(HttpStatusCode.OK, newId);
+                if (ModelState.IsValid) {
+                    var newId = NinjectResolver.Get<IBookRepository>().Create(value);
+                    result = Request.CreateResponse(HttpStatusCode.OK, newId);
+                }
+                else
+                    result = Request.CreateResponse(HttpStatusCode.BadRequest, GetValidationErrorString(ModelState));
+                
             }
             catch { /*ignore*/ };
 
@@ -55,8 +61,12 @@ namespace Kaspersky.TestApp.Controllers
             var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
             try
             {
-                var r = NinjectResolver.Get<IBookRepository>().Update(id, value);
-                result = Request.CreateResponse(HttpStatusCode.OK, r);
+                if (ModelState.IsValid) {
+                    var r = NinjectResolver.Get<IBookRepository>().Update(id, value);
+                    result = Request.CreateResponse(HttpStatusCode.OK, r);
+                }
+                else
+                    result = Request.CreateResponse(HttpStatusCode.BadRequest, GetValidationErrorString(ModelState));
             }
             catch { /*ignore*/ };
 
