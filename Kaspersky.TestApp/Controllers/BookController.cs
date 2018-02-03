@@ -1,91 +1,86 @@
-﻿
-using Kaspersky.TestApp.DataLayer.BookDb.Repo;
-using Kaspersky.TestApp.Infrastructure.Injection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using rep = Kaspersky.TestApp.DataLayer.BookDb.Entities;
+using Kaspersky.TestApp.DataLayer.BookDb.Entities;
+using Kaspersky.TestApp.DataLayer.BookDb.Repo;
+using Kaspersky.TestApp.Miscellaneous.Filters;
 
 namespace Kaspersky.TestApp.Controllers
 {
     public class BookController : BaseApiController
     {
+        private IBookRepository BookRepository { get; set; }
+        public BookController(IBookRepository _br) { BookRepository = _br; }
+
         // GET: api/Book
-        public IEnumerable<rep.Book> Get()
+        public HttpResponseMessage Get()
         {
-            return NinjectResolver.Get<IBookRepository>().GetAll();
+            try {
+                var result = BookRepository.GetAll();
+                return  Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)  {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
+
         // GET: api/Book/5
-        [ResponseType(typeof(rep.Book))]
         public HttpResponseMessage Get(int id)
         {
-            var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
             try {
-                var elem = NinjectResolver.Get<IBookRepository>().Get(id);
-                if (elem != null) result = Request.CreateResponse(HttpStatusCode.OK, elem);
-            }
-            catch { /*ignore*/ }
+                var result = BookRepository.Get(id);
+                
+                if (result == null)
+                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Element '{id} not found!'");
 
-            return result;
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex) {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
         // POST: api/Book
-        [ResponseType(typeof(int))]
-        public HttpResponseMessage Post([FromBody]rep.Book value)
+        [ValidateModel]
+        public HttpResponseMessage Post([FromBody]Book value)
         {
-            var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
-
             try {
-                if (ModelState.IsValid) {
-                    var newId = NinjectResolver.Get<IBookRepository>().Create(value);
-                    result = Request.CreateResponse(HttpStatusCode.OK, newId);
-                }
-                else
-                    result = Request.CreateResponse(HttpStatusCode.BadRequest, GetValidationErrorString(ModelState));
-                
+                var newId = BookRepository.Create(value);
+                return Request.CreateResponse(HttpStatusCode.OK, newId);
             }
-            catch { /*ignore*/ };
-
-            return result;
+            catch (Exception ex) {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            };
         }
 
         // PUT: api/Book/5
-        [ResponseType(typeof(bool))]
-        public HttpResponseMessage Put(int id, [FromBody] rep.Book value)
+        [ValidateModel]
+        public HttpResponseMessage Put(int id, [FromBody] Book value)
         {
-            var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
-            try
-            {
-                if (ModelState.IsValid) {
-                    var r = NinjectResolver.Get<IBookRepository>().Update(id, value);
-                    result = Request.CreateResponse(HttpStatusCode.OK, r);
-                }
-                else
-                    result = Request.CreateResponse(HttpStatusCode.BadRequest, GetValidationErrorString(ModelState));
+            try {
+                var r = BookRepository.Update(id, value);
+                return Request.CreateResponse(HttpStatusCode.OK, r);
             }
-            catch { /*ignore*/ };
-
-            return result;
+            catch (Exception ex) {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            };
         }
 
         // DELETE: api/Book/5
-        [ResponseType(typeof(bool))]
         public HttpResponseMessage Delete(int id)
         {
-            var result = new HttpResponseMessage(HttpStatusCode.BadRequest);
-            try
-            {
-                var r = NinjectResolver.Get<IBookRepository>().Delete(id);
-                result = Request.CreateResponse(HttpStatusCode.OK, r);
+            try {
+                var r = BookRepository.Delete(id);
+                return Request.CreateResponse(HttpStatusCode.OK, r);
             }
-            catch { /*ignore*/ };
-
-            return result;
+            catch (Exception ex) {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+            };
         }
     }
 }

@@ -29,7 +29,7 @@ export class BookListComponent implements OnInit {
         this.bookService.GetAllData().subscribe(bs => {
             this.books = bs;
             this.SortRestore();
-        }, () => console.error("error"));
+        }, err => alert(err));
     }
    
 

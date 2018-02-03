@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Global = /** @class */ (function () {
     function Global() {
     }
-    Global.BASE_TEST_ENDPOINT = 'api/test/';
     Global.BASE_IMGUPLOAD_ENDPOINT = 'api/file/';
     Global.BASE_BOOK_ENDPOINT = 'api/book/';
     Global.BASE_AUTHOR_ENDPOINT = 'api/author/';

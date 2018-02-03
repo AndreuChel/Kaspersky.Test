@@ -51,8 +51,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.0.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -141,10 +149,10 @@
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Miscellaneous\Filters\ValidateModelAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -227,10 +235,6 @@
     <ProjectReference Include="..\Kaspersky.TestApp.DataLayer\Kaspersky.TestApp.DataLayer.csproj">
       <Project>{93985f6e-cd88-4b99-b5db-4a8c989de278}</Project>
       <Name>Kaspersky.TestApp.DataLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Kaspersky.TestApp.Infrastructure\Kaspersky.TestApp.Infrastructure.csproj">
-      <Project>{a023f4cf-45da-4665-81d4-bd0f60e693e1}</Project>
-      <Name>Kaspersky.TestApp.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

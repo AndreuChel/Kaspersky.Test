@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaspersky.TestApp", "Kasper
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaspersky.TestApp.DataLayer", "Kaspersky.TestApp.DataLayer\Kaspersky.TestApp.DataLayer.csproj", "{93985F6E-CD88-4B99-B5DB-4A8C989DE278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaspersky.TestApp.Infrastructure", "Kaspersky.TestApp.Infrastructure\Kaspersky.TestApp.Infrastructure.csproj", "{A023F4CF-45DA-4665-81D4-BD0F60E693E1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{93985F6E-CD88-4B99-B5DB-4A8C989DE278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93985F6E-CD88-4B99-B5DB-4A8C989DE278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93985F6E-CD88-4B99-B5DB-4A8C989DE278}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A023F4CF-45DA-4665-81D4-BD0F60E693E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A023F4CF-45DA-4665-81D4-BD0F60E693E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A023F4CF-45DA-4665-81D4-BD0F60E693E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A023F4CF-45DA-4665-81D4-BD0F60E693E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

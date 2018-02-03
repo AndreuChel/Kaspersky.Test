@@ -31,7 +31,7 @@ var BookListComponent = /** @class */ (function () {
         this.bookService.GetAllData().subscribe(function (bs) {
             _this.books = bs;
             _this.SortRestore();
-        }, function () { return console.error("error"); });
+        }, function (err) { return alert(err); });
     };
     BookListComponent.prototype.OnDelete = function (book) {
         var _this = this;
