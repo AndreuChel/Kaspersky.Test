@@ -261,6 +261,15 @@ node_modules/
 # TypeScript v1 declaration files
 typings/
 
+# Angular #
+**/app/**/*.js
+**/app/**/*.js.map
+
+# dependencies
+/node_modules
+/bower_components
+
+
 # Visual Studio 6 build log
 *.plg
 
