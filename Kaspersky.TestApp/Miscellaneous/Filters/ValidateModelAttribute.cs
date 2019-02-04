@@ -13,6 +13,9 @@ using System.Web.Http.Filters;
 
 namespace Kaspersky.TestApp.Miscellaneous.Filters
 {
+	 /// <summary>
+	 /// Фильтр для методов web api контроллеров. Проверка валидности переданной модели
+	 /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class ValidateModelAttribute : ActionFilterAttribute
     {
@@ -24,8 +27,8 @@ namespace Kaspersky.TestApp.Miscellaneous.Filters
                     string.Join("\r\n - ", actionContext.ModelState.Values
                                                         .Where(m=>m.Errors.Any())
                                                         .Select(m => m.Errors[0].ErrorMessage));
-                        
-                actionContext.Response = actionContext.Request.CreateResponse<string>(HttpStatusCode.BadRequest, content);
+	            
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, content);
             }
         }
     }

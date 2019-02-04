@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer
 {
+	 /// <summary>
+	 /// Модуль внедрения зависимостей
+	 /// </summary>
     public class DataLayerNinjectModule : NinjectModule
     {
         public override void Load()

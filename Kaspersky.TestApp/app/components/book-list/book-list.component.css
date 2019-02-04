@@ -26,11 +26,7 @@ th {
 .bookRow:hover {
     background-color: #ffff99;
 }
-.picBook {
-    avertical-align: bottom;
-    atext-align: center;
-    abackground-color:  #000;
-}
+
 ul {
     margin-left: 10px;
     padding-left: 10px;

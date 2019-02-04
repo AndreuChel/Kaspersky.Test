@@ -1,14 +1,14 @@
-﻿import { Author } from './author';
+﻿import { Author } from "./author";
 
 export class Book {
     constructor(
-        public id: number,
-        public title: string,
-        public authors: Author[],
-        public pCount: number,
-        public publisher: string,
-        public publicYear: string,
-        public ISBN: string,
-        public imagePath: string
+        public Id: number,
+        public Title: string,
+        public Authors: Author[],
+        public PageCount: number,
+        public Publisher: string,
+        public PublicYear: string,
+        public Isbn: string,
+        public ImagePath: string
     ) { }
 }

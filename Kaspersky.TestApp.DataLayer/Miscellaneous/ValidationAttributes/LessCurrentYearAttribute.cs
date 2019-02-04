@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.Miscellaneous.ValidationAttributes
 {
-    internal class LessCurrentYearAttribute : ValidationAttribute
-    {
-
-        public LessCurrentYearAttribute() {  }
-
+	/// <summary>
+	/// Атрибут валидации. Указанный год не может быть больше текущего
+	/// </summary>
+	internal class LessCurrentYearAttribute : ValidationAttribute
+   {
         public override bool IsValid(object value)
         {
-            int val = 0;
-            return int.TryParse(value.ToString(), out val) && val <= DateTime.Now.Year;
+	        return int.TryParse(value.ToString(), out var val) && val <= DateTime.Now.Year;
         }
-    }
+   }
 }

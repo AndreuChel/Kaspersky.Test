@@ -1,5 +1,5 @@
-﻿import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+﻿import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 import { BookListComponent } from "./components/book-list/book-list.component";
 import { BookEditorComponent } from "./components/book-editor/book-editor.component";
 
@@ -9,11 +9,6 @@ const routes: Routes = [
     { path: "books/add", component: BookEditorComponent },
     { path: "books/edit/:id", component: BookEditorComponent }
 ];
-// const routes: Routes = [
-//   { path: "", component: BookListComponent  },
-//   { path: "add", component: BookEditorComponent  },
-//   { path: "edit/:id", component: BookEditorComponent  }
-// ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

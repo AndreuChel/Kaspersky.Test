@@ -1,7 +1,9 @@
-﻿import { Directive, ElementRef, HostListener } from '@angular/core';
+﻿import { Directive, ElementRef, HostListener } from "@angular/core";
+
+/* Директива для обработки нажатия кнопок при вводе в текстовое поле */
 
 @Directive({
-    selector: '[IntNumberOnly]'
+    selector: "[IntNumberOnly]"
 })
 export class NumberOnlyDirective {
 
@@ -10,7 +12,7 @@ export class NumberOnlyDirective {
 
     constructor(private el: ElementRef) { }
 
-    @HostListener('keydown', ['$event'])
+    @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
         if (this.specialKeys.indexOf(event.key) !== -1) { return; }
         let current: string = this.el.nativeElement.value;

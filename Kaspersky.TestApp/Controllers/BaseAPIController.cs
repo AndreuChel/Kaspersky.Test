@@ -10,6 +10,9 @@ using System.Web.Http.ModelBinding;
 
 namespace Kaspersky.TestApp.Controllers
 {
+	 /// <summary>
+	 /// Базовый класс для контроллеров
+	 /// </summary>
     public class BaseApiController : ApiController
     {
         protected HttpResponseMessage ToJson(dynamic obj)

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.Miscellaneous.ValidationAttributes
 {
+	 /// <summary>
+	 /// Атрибут валидации. Проверка существования хотя бы одного элемента в списке
+	 /// </summary>
     internal class MustHaveOneElementAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)

@@ -1,92 +1,94 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BookService } from '../../services/book.service'
-import { Book } from '../../models/book'
-import { Author } from '../../models/author'
-import { Global } from '../../global'
-import { CookieHelper } from '../../miscellaneous/CookieHelper'
+﻿import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { BookService } from "../../services/book.service"
+import { Book } from "../../models/book"
+import { CookieHelper } from "../../miscellaneous/CookieHelper"
+
+/* Компонент. Форма списка книг */
 
 declare var jquery: any;
 declare var $: any;
-class sort_data { title: string; status: number; }
-
+class SortInfo { title: string; status: number; }
 
 @Component({
-    selector: 'book-list',
-    templateUrl: './book-list.component.html',
-    styleUrls: ['./book-list.component.css']
+    selector: "book-list",
+    templateUrl: "./book-list.component.html",
+    styleUrls: ["./book-list.component.css"]
 })
+
 export class BookListComponent implements OnInit {
     books: Book[];
 
-    sortData: sort_data[] = [
-        { title: "title", status: 0 }, { title: "pCount", status: 0 }
+    sortData: SortInfo[] = [
+        { title: "Title", status: 0 }, { title: "PageCount", status: 0 }
     ];
 
     constructor(private bookService: BookService, private router: Router) { }
 
     ngOnInit() {
-        this.bookService.GetAllData().subscribe(bs => {
+        this.bookService.getAllData().subscribe(bs => {
             this.books = bs;
-            this.SortRestore();
+            this.sortRestore();
         }, err => alert(err));
     }
    
 
-    OnDelete(book: Book) {
+    onDelete(book: Book) {
         this.bookService.delete(book).subscribe(b => {
             this.books.splice(this.books.indexOf(b), 1);
         }, err => { alert(err); });
     }
 
-    OnEdit(book: Book) {
-        this.router.navigate(["books", "edit", book.id])
+    onEdit(book: Book) {
+	    this.router.navigate(["books", "edit", book.Id]);
     }
 
-    AddBook() {
-        this.router.navigate(["books", "add"])
+    addBook() {
+	    this.router.navigate(["books", "add"]);
     }
 
 
-    SortStatus(name: string) {
+    sortStatus(name: string) {
         var st = this.sortData.find(s => s.title == name);
         return !st ? 0 : st.status;
-    }
-    SortClick(name: string) {
+	 }
+
+    sortClick(name: string) {
         var st = this.sortData.find(s => s.title == name);
         if (st) {
             st.status = st.status == 1 ? 2 : 1;
             this.sortData.filter(el => el.title != st.title).forEach(el => el.status = 0);
-            this.Sort(name);
+            this.sort(name);
         }
-    }
-    Sort(name: string) {
+	 }
+
+    sort(name: string) {
         var st = this.sortData.find(s => s.title == name);
         if (st) {
-            if (st.title == 'title') {
-                this.books.sort(function (a: any, b: any) {
-                    if (st.status == 2) { var t = a; a = b; b = t; }
-                    return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 :
-                              ((b.title.toLowerCase() > a.title.toLowerCase()) ? -1 : 0);
+            if (st.title == "Title") {
+                this.books.sort((a: any, b: any) => {
+	                if (st.status == 2) { var t = a; a = b; b = t; }
+	                return (a.Title.toLowerCase() > b.Title.toLowerCase()) ? 1 :
+		                ((b.Title.toLowerCase() > a.Title.toLowerCase()) ? -1 : 0);
                 });
             }
-            if (st.title == 'pCount') {
+            if (st.title == "PageCount") {
 
-                this.books.sort(function (a: any, b: any) {
-                    if (st.status == 2) { var t = a; a = b; b = t; }
-                    return (a.pCount > b.pCount) ? 1 : ((b.pCount > a.pCount) ? -1 : 0);
+                this.books.sort((a: any, b: any) => {
+	                if (st.status == 2) { var t = a; a = b; b = t; }
+	                return (a.PageCount > b.PageCount) ? 1 : ((b.PageCount > a.PageCount) ? -1 : 0);
                 });
             }
-            CookieHelper.setCookie("sortby", st.title, 5);
-            CookieHelper.setCookie("sortdirection", st.status, 5);
+            CookieHelper.setCookie("sortBy", st.title, 5);
+            CookieHelper.setCookie("sortDirection", st.status, 5);
         }
     }
-    SortRestore() {
-        var sort_param = CookieHelper.getCookie("sortby");
-        var sort_direction = CookieHelper.getCookie("sortdirection");
-        if (sort_param != "" && sort_direction != "") {
-            this.sortData.forEach(el => el.status = el.title == sort_param ? parseInt(sort_direction) : 0);
-            this.Sort(sort_param);
+    sortRestore() {
+        var sortParam = CookieHelper.getCookie("sortBy");
+        var sortDirection = CookieHelper.getCookie("sortDirection");
+        if (sortParam != "" && sortDirection != "") {
+            this.sortData.forEach(el => el.status = el.title == sortParam ? parseInt(sortDirection) : 0);
+            this.sort(sortParam);
         }
     }
 }

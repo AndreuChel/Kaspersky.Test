@@ -7,22 +7,25 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.BookDb.Repo
 {
-    public interface IAuthorRepository : IRepository<Author> { };
+    public interface IAuthorRepository : IRepository<Author> { }
 
+	 /// <summary>
+	 ///  Репозиторий для хранения авторов книг (фейковые данные берутся из репозитория с книгами)
+	 /// </summary>
     public class AuthorRepository : RepositoryBase<Author>, IAuthorRepository
     {
-        private static List<Author> data = new List<Author>();
+        private static List<Author> _data;
 
         static AuthorRepository () {
-            data = new BookRepository()
-                   .Data.SelectMany(b => b.authors)
-                   .GroupBy(a => a.id)
+            _data = new BookRepository()
+                   .Data.SelectMany(b => b.Authors)
+                   .GroupBy(a => a.Id)
                    .Select(g => g.First()).ToList();
         }
 
-        public override List<Author> Data { get { return data ?? (data = new List<Author>()); } }
+        public override List<Author> Data => _data ?? (_data = new List<Author>());
 
-        public override int Create(Author src)
+	     public override int Create(Author src)
         {
             if (Data.Any(d => d.FirstName.ToUpper().Trim() == src.FirstName.ToUpper().Trim() &&
                               d.LastName.ToUpper().Trim() == src.LastName.ToUpper().Trim()))

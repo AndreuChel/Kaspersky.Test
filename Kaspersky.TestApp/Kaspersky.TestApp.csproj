@@ -26,7 +26,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -153,6 +154,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Miscellaneous\Filters\ValidateModelAttribute.cs" />
+    <Compile Include="Miscellaneous\Uploader\IUploadHelper.cs" />
+    <Compile Include="Miscellaneous\Uploader\UploadHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +225,7 @@
     <TypeScriptCompile Include="app\global.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\miscellaneous\CookieHelper.ts" />
-    <TypeScriptCompile Include="app\miscellaneous\my-validator.ts" />
+    <TypeScriptCompile Include="app\miscellaneous\ValidateHelper.ts" />
     <TypeScriptCompile Include="app\models\author.ts" />
     <TypeScriptCompile Include="app\models\book.ts" />
     <TypeScriptCompile Include="app\services\author.service.ts" />

@@ -1,29 +1,29 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { BookService } from '../../services/book.service'
-import { Book } from '../../models/book'
-import { Author } from '../../models/author'
-import { AuthorService } from '../../services/author.service'
-import { MyValidator } from '../../Miscellaneous/my-validator'
-import { Global } from '../../global'
+﻿import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
+import { BookService } from "../../services/book.service"
+import { Book } from "../../models/book"
+import { Author } from "../../models/author"
+import { AuthorService } from "../../services/author.service"
+import { ValidateHelper } from "../../Miscellaneous/ValidateHelper"
 declare var $: any;
-//declare var isbnValidator: any;
+
+/* Компонент. Карточка редактирования книги */
 
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms/src/model';
 
 @Component({
-    selector: 'book-editor',
-    templateUrl: './book-editor.component.html',
-    styleUrls: ['./book-editor.component.css']
+    selector: "book-editor",
+    templateUrl: "./book-editor.component.html",
+    styleUrls: ["./book-editor.component.css"]
 })
+
 export class BookEditorComponent implements OnInit {
     public book: Book = new Book(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
     public bookPhoto: string;
     
     isNew: boolean = true;
-    BookEditForm: FormGroup;
+    bookEditForm: FormGroup;
 
     constructor(private currentRoute: ActivatedRoute,
         private fb: FormBuilder,
@@ -35,50 +35,50 @@ export class BookEditorComponent implements OnInit {
         var bookId = this.currentRoute.snapshot.params["id"];
         this.isNew = bookId == undefined;
 
-        this.BookEditForm = this.fb.group({
-            title: new FormControl("", [Validators.required, MyValidator.maxLength30Validator]),
-            pCount: new FormControl("", [Validators.required, MyValidator.minInt0Validator, MyValidator.maxInt10000Validator]),
-            publisher: new FormControl("", [MyValidator.maxLength30Validator]),
-            publicYear: new FormControl("", [Validators.required, MyValidator.minYear1800Validator, MyValidator.maxCurrentYearValidator]),
-            isbn: new FormControl("", [Validators.required, MyValidator.isbnValidator]),
+        this.bookEditForm = this.fb.group({
+            title: new FormControl("", [Validators.required, ValidateHelper.maxLength30Validator]),
+            pCount: new FormControl("", [Validators.required, ValidateHelper.minInt0Validator, ValidateHelper.maxInt10000Validator]),
+            publisher: new FormControl("", [ValidateHelper.maxLength30Validator]),
+            publicYear: new FormControl("", [Validators.required, ValidateHelper.minYear1800Validator, ValidateHelper.maxCurrentYearValidator]),
+            isbn: new FormControl("", [Validators.required, ValidateHelper.isbnValidator]),
             photo: new FormControl(""),
         });
 
-        var _form = this.BookEditForm.controls;
+        var bookForm = this.bookEditForm.controls;
         if (bookId) {
-            this.bookService.GetData(bookId).subscribe(bs => {
+            this.bookService.getData(bookId).subscribe(bs => {
                 this.book = bs;
-                _form["title"].patchValue(this.book.title); _form["pCount"].patchValue(this.book.pCount);
-                _form["publisher"].patchValue(this.book.publisher); _form["publicYear"].patchValue(this.book.publicYear);
-                _form["isbn"].patchValue(this.book.ISBN);
+                bookForm["title"].patchValue(this.book.Title); bookForm["pCount"].patchValue(this.book.PageCount);
+                bookForm["publisher"].patchValue(this.book.Publisher); bookForm["publicYear"].patchValue(this.book.PublicYear);
+                bookForm["isbn"].patchValue(this.book.Isbn);
 
-                this.bookPhoto = this.book.imagePath;
-                this.updateAuthorControl(this.book.authors);
+                this.bookPhoto = this.book.ImagePath;
+                this.updateAuthorControl(this.book.Authors);
 
             }, () => console.error("error"));
         }
         else this.updateAuthorControl(undefined);
         
-        $('#multiselect').multiselect({ keepRenderingSort: true });
+        $("#multiselect").multiselect({ keepRenderingSort: true });
     }
 
     updateAuthorControl(data: Author[] | undefined) {
         var leftAutors: Author[] = data ? data: [];
-        this.authorService.GetAllData().subscribe(a => {
-            var rightAutors: Author[] = a.filter(r => !leftAutors.find(l => l.id == r.id))
-            leftAutors.forEach(a => {
-                $('#multiselect_to').append($("<option></option>")
-                                    .attr("value", a.id).text(a.FirstName + ' ' + a.LastName));
-            });
-            rightAutors.forEach(a => {
-                $('#multiselect').append($("<option></option>")
-                                 .attr("value", a.id).text(a.FirstName + ' ' + a.LastName));
-            });
+        this.authorService.getAllData().subscribe(a => {
+			  var rightAutors: Author[] = a.filter(r => !leftAutors.find(l => l.Id == r.Id));
+	        leftAutors.forEach(a => {
+                $("#multiselect_to").append($("<option></option>")
+                                    .attr("value", a.Id).text(a.FirstName + ' ' + a.LastName));
+           });
+           rightAutors.forEach(a => {
+                $("#multiselect").append($("<option></option>")
+                                 .attr("value", a.Id).text(a.FirstName + ' ' + a.LastName));
+           });
         });
     }
     
     isControlInvalid(controlName: string): boolean {
-        const control = this.BookEditForm.controls[controlName];
+        const control = this.bookEditForm.controls[controlName];
         return control.invalid && control.touched;
     }
 
@@ -90,44 +90,47 @@ export class BookEditorComponent implements OnInit {
             }, e => alert(e) );
         }
     }
-    LoadImage() {
-        $("#photo").click();
-    }
-    ClearImage() { this.bookPhoto = ""; }
 
-    get AutorCount(): boolean {
+	 loadImage() {
+        $("#photo").click();
+	 }
+
+    clearImage() { this.bookPhoto = ""; }
+
+    get autorCount(): boolean {
         return $("#multiselect_to option").length;
     }
 
-    AddAuthor(firstName: string, lastName: string) {
+    addAuthor(firstName: string, lastName: string) {
         if (!(firstName && lastName && firstName.length < 20 && lastName.length < 20)) {
             alert("Ошибка добавления автора. Имя и фамилия должны быть не пустыми и их максимальное количество знаков должно быть меньше 20!");
             return;
         }
 
-        this.authorService.Add(firstName, lastName).subscribe(a => {
-            $('#multiselect').append($("<option></option>").attr("value", a.id).text(a.FirstName + ' ' + a.LastName));
+        this.authorService.add(firstName, lastName).subscribe(a => {
+            $("#multiselect").append($("<option></option>").attr("value", a.Id).text(a.FirstName + ' ' + a.LastName));
         }, e => alert(e));
     }
 
-    CancelClick() {
+    cancelClick() {
         this.router.navigate(["books"]);
     }
 
-    SaveClick() {
-        var _form = this.BookEditForm.value;
+    saveClick() {
+        var bookForm = this.bookEditForm.value;
         var newBook: Book = new Book(
-            this.book.id, _form.title, [], _form.pCount, _form.publisher,
-            _form.publicYear, _form.isbn, this.bookPhoto
+            this.book.Id, bookForm.title, [], bookForm.pCount, bookForm.publisher,
+            bookForm.publicYear, bookForm.isbn, this.bookPhoto
         );
 
-        this.authorService.GetAllData().subscribe(a => {
+        this.authorService.getAllData().subscribe(a => {
             $("#multiselect_to option").each(function () {
-                a.filter(el => el.id == $(this).val())
-                    .forEach(function (el) { newBook.authors.push(el); })
-            });
-            var _service = this.isNew ? this.bookService.create(newBook) : this.bookService.update(newBook);
-            _service.subscribe(b => this.router.navigate(["books"]), e => alert(e));
+				// ReSharper disable once SuspiciousThisUsage
+	            a.filter(el => el.Id == $(this).val()).forEach(el => { newBook.Authors.push(el); });
+				});
+
+            var bookService = this.isNew ? this.bookService.create(newBook) : this.bookService.update(newBook);
+            bookService.subscribe(() => this.router.navigate(["books"]), e => alert(e));
         });
     }
 }

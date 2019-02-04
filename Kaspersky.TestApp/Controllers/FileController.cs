@@ -6,46 +6,37 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Kaspersky.TestApp.Miscellaneous.Uploader;
 
 namespace Kaspersky.TestApp.Controllers
 {
+	 /// <summary>
+	 /// Контроллер для загрузки файлов на сервер
+	 /// </summary>
     public class FileController : BaseApiController
-    {
-        [ActionName("Upload")]
-        [HttpPost]
-        public async Task<IHttpActionResult> Upload()
-        {
-            if (!Request.Content.IsMimeMultipartContent()) return BadRequest();
+	 {
+		 private IUploadHelper Uploader { get; }
 
-            IHttpActionResult result = Ok();
+		 public FileController(IUploadHelper uploader)
+		 {
+			 Uploader = uploader;
+		 }
 
-            var provider = new MultipartMemoryStreamProvider();
-            
-            string root = System.Web.HttpContext.Current.Server.MapPath("~/assets/images/");
-            try
-            {
-                await Request.Content.ReadAsMultipartAsync(provider);
+		 [ActionName("Upload")]
+		 [HttpPost]
+		 public async Task<IHttpActionResult> Upload()
+		 {
+			 try
+			 {
+				 const string uploadFolder = "/assets/images/";
+				 var filename = await Uploader.UploadFileAsync(Request, Uploader.MapPath($"~{uploadFolder}"));
 
-                string filename = "";
-                foreach (var file in provider.Contents)
-                {
-                    if (!string.IsNullOrEmpty(file.Headers.ContentDisposition.FileName))
-                    {
-                        var f = file.Headers.ContentDisposition.FileName.Trim('\"');
-                        filename = $"{Path.GetFileNameWithoutExtension(f)}.{Math.Abs(DateTime.Now.GetHashCode())}{Path.GetExtension(f)}";
-                        byte[] fileArray = await file.ReadAsByteArrayAsync();
-
-                        using (FileStream fs = new FileStream(root + filename, FileMode.Create))
-                        {
-                            await fs.WriteAsync(fileArray, 0, fileArray.Length);
-                        }
-                    }
-                }
-                result = Ok($"./assets/images/{filename}");
-            }
-            catch (Exception exception) { result = BadRequest(exception.Message); }
-
-            return result;
-        }
+				 return Ok($".{uploadFolder}{filename}");
+			 }
+			 catch (Exception ex)
+			 {
+				 return InternalServerError(ex);
+			 }
+		 }
     }
 }

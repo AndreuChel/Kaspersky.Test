@@ -11,44 +11,44 @@ using System.Web.Http.Description;
 
 namespace Kaspersky.TestApp.Controllers
 {
+	 /// <summary>
+	 /// Контроллер для работы с авторами книг (получения списка, редактирование, удаление, ...)
+	 /// </summary>
+	 
     public class AuthorController : BaseApiController
     {
-        private IAuthorRepository AuthorRepository { get; set; }
-        public AuthorController(IAuthorRepository _ar) { AuthorRepository = _ar; }
+	    private IAuthorRepository AuthorRepository { get; }
+	    public AuthorController(IAuthorRepository authorRepository) { AuthorRepository = authorRepository; }
 
-        public HttpResponseMessage Get()
+        public IHttpActionResult Get()
         {
-            try {
-                var result = AuthorRepository.GetAll();
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
+	        try {
+		        return Ok(AuthorRepository.GetAll());
+	        }
+	        catch (Exception ex) {
+		        return InternalServerError(ex);
+	        }
         }
 
-        public HttpResponseMessage Get(int id)
+        public IHttpActionResult Get(int id)
         {
             try {
-                var result = AuthorRepository.Get(id);
-                if (result == null)
-                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Element '{id} not found!'");
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+	            var result = AuthorRepository.Get(id);
+	            return result != null ? (IHttpActionResult) Ok(result) : NotFound();
             }
             catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+	            return InternalServerError(ex);
             }
         }
 
         [ValidateModel]
-        public HttpResponseMessage Post(Author value)
+        public IHttpActionResult Post(Author value)
         {
             try {
-                var result = AuthorRepository.Create(value);
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+	            return Ok(AuthorRepository.Create(value));
             }
             catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+	            return InternalServerError(ex);
             }
         }
     }

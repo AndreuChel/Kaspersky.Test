@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookDb\Repo\IRepository.cs" />
     <Compile Include="DataLayerNinjectModule.cs" />
     <Compile Include="BookDb\Entities\Book.cs" />
     <Compile Include="BookDb\Entities\Author.cs" />

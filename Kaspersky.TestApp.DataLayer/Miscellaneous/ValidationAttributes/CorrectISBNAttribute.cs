@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.Miscellaneous.ValidationAttributes
 {
+	 /// <summary>
+	 /// Атрибут валидации. Проверка валидности кода ISBN
+	 /// </summary>
     internal class CorrectISBNAttribute : ValidationAttribute
     {
-        public CorrectISBNAttribute() { }
-
         public override bool IsValid(object value)
         {
             if (value == null) return false;

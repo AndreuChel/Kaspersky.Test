@@ -9,6 +9,7 @@ using Kaspersky.TestApp.DataLayer.BookDb.Repo;
 using Ninject.Web.WebApi.Filter;
 using System.Web.Http.Validation;
 using Kaspersky.TestApp.DataLayer;
+using Kaspersky.TestApp.Miscellaneous.Uploader;
 
 namespace Kaspersky.TestApp
 {
@@ -18,7 +19,9 @@ namespace Kaspersky.TestApp
         {
             //Внедрение зависимостей
             var kernel = new StandardKernel(new DataLayerNinjectModule());
-            config.DependencyResolver = new NinjectDependencyResolver(kernel);
+	         kernel.Bind<IUploadHelper>().To<UploadHelper>();
+
+	         config.DependencyResolver = new NinjectDependencyResolver(kernel);
 
             // Маршруты веб-API
             config.MapHttpAttributeRoutes();

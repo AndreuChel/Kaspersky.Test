@@ -7,29 +7,27 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.BookDb.Repo
 {
-    public interface IRepository<T> where T: EntityBase
-    {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        int Create(T src);
-        bool Update(int id, T src);
-        bool Delete(int id);
-    }
-
+	 /// <summary>
+	 /// Базовый класс репозитория
+	 /// </summary>
+	 /// <typeparam name="T"></typeparam>
     public abstract class RepositoryBase<T> : IRepository<T>
         where T : EntityBase
     {
         public abstract List<T> Data { get; }
 
-        public IEnumerable<T> GetAll() => Data;
+        public IEnumerable<T> GetAll()
+        {
+	        return Data;
+        }
 
-        public T Get(int id) => Data.SingleOrDefault(a => a.id == id);
+	     public T Get(int id) => Data.SingleOrDefault(a => a.Id == id);
 
         public virtual int Create(T src)
         {
-            src.id = Data.Any() ? Data.Select(el => el.id).Max() + 1 : 0;
+            src.Id = Data.Any() ? Data.Select(el => el.Id).Max() + 1 : 0;
             Data.Add(src);
-            return src.id;
+            return src.Id;
         }
 
         public virtual bool Delete(int id)

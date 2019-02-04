@@ -11,76 +11,56 @@ using Kaspersky.TestApp.Miscellaneous.Filters;
 
 namespace Kaspersky.TestApp.Controllers
 {
+	 /// <summary>
+	 /// Контроллер для работы с книгами (получения списка, редактирование, удаление, ...)
+	 /// </summary>
     public class BookController : BaseApiController
     {
-        private IBookRepository BookRepository { get; set; }
-        public BookController(IBookRepository _br) { BookRepository = _br; }
+        private IBookRepository BookRepository { get; }
+        public BookController(IBookRepository bookRepository) { BookRepository = bookRepository; }
 
-        // GET: api/Book
-        public HttpResponseMessage Get()
-        {
-            try {
-                var result = BookRepository.GetAll();
-                return  Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch (Exception ex)  {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
+        //GET: api/Book
+        public IHttpActionResult Get() {
+	        try {
+		        return Ok(BookRepository.GetAll());
+	        }
+	        catch (Exception ex) {
+		        return InternalServerError(ex);
+	        }
         }
 
-
         // GET: api/Book/5
-        public HttpResponseMessage Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            try {
-                var result = BookRepository.Get(id);
-                
-                if (result == null)
-                    return Request.CreateResponse(HttpStatusCode.NotFound, $"Element '{id} not found!'");
-
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
+	        try {
+		        var result = BookRepository.Get(id);
+		        return result != null ? (IHttpActionResult) Ok(result) : NotFound();
+	        }
+	        catch (Exception ex) {
+		        return InternalServerError(ex);
+	        }
         }
 
         // POST: api/Book
         [ValidateModel]
-        public HttpResponseMessage Post([FromBody]Book value)
-        {
-            try {
-                var newId = BookRepository.Create(value);
-                return Request.CreateResponse(HttpStatusCode.OK, newId);
-            }
-            catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            };
-        }
+        public IHttpActionResult Post([FromBody]Book value) 
+		  {
+			  try {
+				  return Ok(BookRepository.Create(value));
+			  }
+			  catch (Exception ex) {
+				  return InternalServerError(ex);
+			  }
+		  }
 
         // PUT: api/Book/5
         [ValidateModel]
-        public HttpResponseMessage Put(int id, [FromBody] Book value)
-        {
-            try {
-                var r = BookRepository.Update(id, value);
-                return Request.CreateResponse(HttpStatusCode.OK, r);
-            }
-            catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            };
-        }
+        public IHttpActionResult Put(int id, [FromBody] Book value) 
+	        => BookRepository.Update(id, value) ? (IHttpActionResult) Ok() : NotFound();
 
         // DELETE: api/Book/5
-        public HttpResponseMessage Delete(int id)
-        {
-            try {
-                var r = BookRepository.Delete(id);
-                return Request.CreateResponse(HttpStatusCode.OK, r);
-            }
-            catch (Exception ex) {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
-            };
-        }
+        public IHttpActionResult Delete(int id) 
+	        => BookRepository.Delete(id) ? (IHttpActionResult) Ok() : NotFound(); 
+        
     }
 }

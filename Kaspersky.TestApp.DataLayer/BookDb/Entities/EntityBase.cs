@@ -12,6 +12,6 @@ namespace Kaspersky.TestApp.DataLayer.BookDb.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace Kaspersky.TestApp.DataLayer.Miscellaneous.ValidationAttributes
 {
+	 /// <summary>
+	 /// Атрибут валидации. Элемент должен быть не меньше определенного значения
+	 /// </summary>
     internal class MinIntValueAttribute : ValidationAttribute
     {
-        public int MinValue { get; private set; }
+        public int MinValue { get; }
 
         public MinIntValueAttribute(int val) { MinValue = val; }
 
         public override bool IsValid(object value)
         {
-            int val = 0;
-            return int.TryParse(value.ToString(), out val) && val >= MinValue;
+	        return int.TryParse(value.ToString(), out var val) && val >= MinValue;
         }
     }
 }

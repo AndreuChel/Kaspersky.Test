@@ -4,19 +4,19 @@
             <tr>
                 <th>Обложка</th>
                 <th>
-                    <button type="button" class="btn btn-link" (click)="SortClick('title')">Заголовок</button>
-                    <span class="glyphicon glyphicon-arrow-up"   *ngIf = "SortStatus('title') == 2"></span>
-                    <span class="glyphicon glyphicon-arrow-down" *ngIf = "SortStatus('title') == 1"></span>
+                    <button type="button" class="btn btn-link" (click)="sortClick('Title')">Заголовок</button>
+                    <span class="glyphicon glyphicon-arrow-up"   *ngIf = "sortStatus('Title') == 2"></span>
+                    <span class="glyphicon glyphicon-arrow-down" *ngIf = "sortStatus('Title') == 1"></span>
                 </th>
                 <th>Авторы</th>
                 <th style="min-width:100px;">
                     <div style="display:inline-block;">
                         <div style="display:inline">
-                            <button type="button" class="btn btn-link" (click)="SortClick('pCount')">Стр</button>
+                            <button type="button" class="btn btn-link" (click)="sortClick('PageCount')">Стр</button>
                         </div>
                         <div style="display:inline">
-                            <span class="glyphicon glyphicon-arrow-up" *ngIf="SortStatus('pCount') == 2"></span>
-                            <span class="glyphicon glyphicon-arrow-down" *ngIf="SortStatus('pCount') == 1"></span>
+                            <span class="glyphicon glyphicon-arrow-up" *ngIf="sortStatus('PageCount') == 2"></span>
+                            <span class="glyphicon glyphicon-arrow-down" *ngIf="sortStatus('PageCount') == 1"></span>
                         </div>
                     </div>
                 </th>
@@ -24,7 +24,7 @@
                 <th>Год</th>
                 <th>ISBN</th>
                 <th colspan="2">
-                    <button type="button" (click)="AddBook()" class="btn btn-default">
+                    <button type="button" (click)="addBook()" class="btn btn-default">
                         <span class= "glyphicon glyphicon-plus-sign"></span>
                             Добавить книгу
                      </button>
@@ -33,29 +33,29 @@
         </thead>
         <tr class="bookRow" *ngFor="let book of books">
             <td class="picBook">
-                <img *ngIf="book.imagePath" width="50px" height="50px" [src]="book.imagePath" />
-                <img *ngIf="!book.imagePath" width="50px" height="50px" />
+                <img *ngIf="book.ImagePath" width="50px" height="50px" [src]="book.ImagePath" />
+                <img *ngIf="!book.ImagePath" width="50px" height="50px" />
             </td>
-            <td style="width:40%">{{book.title}}</td>
+            <td style="width:30%">{{book.Title}}</td>
             <td style="width:25%">
                 <ul>
-                    <li *ngFor="let a of book.authors">
+                    <li *ngFor="let a of book.Authors">
                         {{a.FirstName}} {{a.LastName}}
                     </li>
                 </ul>
             </td>
-            <td>{{book.pCount | number }}</td>
-            <td>{{book.publisher}}</td>
-            <td>{{book.publicYear}}</td>
-            <td>{{book.ISBN}}</td>
+            <td style="width:10%">{{book.PageCount | number }}</td>
+            <td style="width:10%">{{book.Publisher}}</td>
+            <td style="width:7%">{{book.PublicYear}}</td>
+            <td style="width:10%">{{book.Isbn}}</td>
             <td>
-                <button type="button" (click)="OnEdit(book)" class="btn btn-default">
+                <button type="button" (click)="onEdit(book)" class="btn btn-default">
                     <span class="glyphicon glyphicon-pencil"></span>
                     Edit
                 </button>
             </td>
             <td>
-                <button type="button" (click)="OnDelete(book)" class="btn btn-default">
+                <button type="button" (click)="onDelete(book)" class="btn btn-default">
                     <span class="glyphicon glyphicon-remove"></span>
                     Delete
                 </button>
